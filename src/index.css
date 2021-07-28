@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
 body {
   margin: 0;
   padding: 0;
@@ -10,8 +11,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
   /* background: linear-gradient(45deg, 	rgb(217, 179, 255), white); */
   /* background: rgb(245, 230, 255); */
-  font-family: 'Rubik', sans-serif;
-  letter-spacing: 1px;
+  font-family: 'Lato', sans-serif;
+  letter-spacing: 0.5px;
   height: 100%;
   width: 100%;
 }
