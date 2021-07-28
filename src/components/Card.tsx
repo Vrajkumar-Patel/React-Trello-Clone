@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import React, { useEffect, useState } from "react";
 import {
   Paper,
@@ -26,13 +28,15 @@ import IconButton from "@material-ui/core/IconButton";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import { styled } from "@material-ui/core/styles";
+// import { styled } from "@material-ui/core/styles";
 import { v4 as uuid } from "uuid";
 import { TagsType } from "./Phase";
 // -----------------
 
 // import of progress Images
 import progress1 from "../assets/progress1.png";
+import mainPicImg from "../assets/main.svg";
+
 import { StateType } from "../redux/store";
 import { setDeleteCard, setEditCard } from "../redux/ListsReducer";
 import toast from "react-hot-toast";
@@ -40,6 +44,10 @@ import {
   KeyboardTimePicker,
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
+import styled from "styled-components";
+import CreateRoundedIcon from "@material-ui/icons/CreateRounded";
+import DeleteRoundedIcon from "@material-ui/icons/DeleteRounded";
+
 // Done
 
 type Props = {
@@ -55,32 +63,34 @@ type ChipProps = {
   tagIndex: number;
 };
 
-const MyPaper = styled(Paper)({
+const MyPaper = styled.div`
+  box-shadow: 0px 3px 5px 1px rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+  background-color: ${(props) =>
+    props.isDragging ? "rgb(245, 230, 255)" : "white"};
+`;
+const Div = styled("div")({
   borderRadius: "20px",
 });
 
-const ModalPaper = styled(Paper)({
-  minHeight: "300px",
-  maxHeight: "calc(100vh - 100px)",
-  minWidth: "800px",
-  maxWidth: "800px",
-  outline: "none",
-  borderRadius: "30px",
-  display: "flex",
-  flexDirection: "column",
-  padding: "20px",
-  overflow: "hidden",
-  overflowY: "inherit",
-  scrollBehavior: "smooth",
+const ModalPaper = styled(Paper)((props) => {
+  return {
+    minHeight: "300px",
+    maxHeight: "calc(100vh - 100px)",
+    minWidth: "800px",
+    maxWidth: "800px",
+    outline: "none",
+    borderRadius: "30px",
+    display: "flex",
+    flexDirection: "column",
+    padding: "20px",
+    overflow: "hidden",
+    overflowY: "inherit",
+    scrollBehavior: "smooth",
+  };
 });
 
-const Card: React.FC<Props> = ({
-  cardIndex,
-  cardDetails,
-  droppableSnapshot,
-  phaseDetails,
-  phaseKey,
-}) => {
+const Card: React.FC<Props> = ({ cardIndex, cardDetails, phaseKey }) => {
   const dispatch = useDispatch();
 
   const dragDestinationData: DragData = useSelector(
@@ -123,10 +133,9 @@ const Card: React.FC<Props> = ({
         name: tagInput,
       };
       if (tagsArray) {
-        setTagsArray([...tagsArray, obj]!)
-      }
-      else {
-        setTagsArray([obj])
+        setTagsArray([...tagsArray, obj]!);
+      } else {
+        setTagsArray([obj]);
       }
       setTagInput("");
     }
@@ -172,7 +181,7 @@ const Card: React.FC<Props> = ({
     };
     dispatch(setEditCard(editObj));
     handleModalClose();
-    toast.success('Card Edited Successfully');
+    toast.success("Card Edited Successfully");
   };
 
   return (
@@ -182,62 +191,82 @@ const Card: React.FC<Props> = ({
         {(provided, snapshot) => (
           <>
             <MyPaper
-              className="card"
+              className={[
+                "card",
+                snapshot.isDragging ? "card_background" : "",
+              ].join(" ")}
               elevation={5}
-              ref={provided.innerRef}
-              {...provided.dragHandleProps}
+              style={{
+                backgroundColor: `${snapshot.isDragging ? "black" : "white"}`,
+              }}
               {...provided.draggableProps}
+              {...provided.dragHandleProps}
+              ref={provided.innerRef}
+              isDragging={snapshot.isDragging}
             >
               {/* Image of the card if available---------------------------------------------------------------- */}
-
-              {cardDetails.cardImage ? (
-                <img
-                  src={cardDetails.cardImage}
-                  width="100%"
-                  height="200px"
-                  style={{
-                    borderRadius: "30px",
-                    boxShadow: "0px 0px 5px 1px black",
-                  }}
-                />
-              ) : (
-                <></>
-              )}
+              <div>
+                {cardDetails.cardImage ? (
+                  <img
+                    src={cardDetails.cardImage}
+                    width="100%"
+                    height="200px"
+                    style={{
+                      borderRadius: "30px",
+                      boxShadow: "0px 0px 5px 1px black",
+                    }}
+                  />
+                ) : (
+                  <></>
+                )}
+              </div>
 
               {/* title section of the Card--------------------------------------------------------------------  */}
-
               <div className="card_title">
                 <div className="card_titleLeft">
-                  <img src={progress1} height="75px" width="75px" />
+                  <img src={mainPicImg} height="50px" width="50px" style={{margin: '0px 15px 10px 15px'}} />
                   <h3>{cardDetails.title}</h3>
                 </div>
-                <IconButton
-                  // aria-label="more"
-                  // aria-controls="long-menu"
-                  // aria-haspopup="true"
-                  onClick={handleClick}
-                  style={{ height: "50px", width: "50px" }}
-                >
-                  <MoreVertIcon />
-                </IconButton>
-                {/* Menu */}
-                <Menu
-                  anchorEl={anchorEl}
-                  keepMounted
-                  open={open}
-                  onClose={handleClose}
-                  PaperProps={{
-                    style: {
-                      maxHeight: "fit-content",
-                      width: "10ch",
-                      //   paddingLeft: "8px",
-                    },
-                  }}
-                >
-                  <MenuItem onClick={handleModalOpen}>Edit</MenuItem>
-                  <MenuItem onClick={handleDeleteCard}>Delete</MenuItem>
-                </Menu>
-                {/* Ends Here */}
+                <div className="card_titleRight">
+                  <IconButton
+                    onClick={handleClick}
+                    style={{
+                      height: "50px",
+                      width: "50px",
+                      marginLeft: "auto",
+                    }}
+                  >
+                    <MoreVertIcon />
+                  </IconButton>
+                  <Menu
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={open}
+                    onClose={handleClose}
+                    anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                    transformOrigin={{ vertical: -50, horizontal: 120 }}
+                    PaperProps={{
+                      style: {
+                        maxHeight: "fit-content",
+                        width: "11ch",
+                        //   paddingLeft: "8px",
+                      },
+                    }}
+                  >
+                    <MenuItem onClick={handleModalOpen}>
+                      <CreateRoundedIcon
+                        style={{ color: "#2ecc71", marginRight: "10px" }}
+                      />
+                      Edit
+                    </MenuItem>
+                    <MenuItem onClick={handleDeleteCard}>
+                      <DeleteRoundedIcon
+                        style={{ color: "#fdcb6e", marginRight: "10px" }}
+                      />
+                      Delete
+                    </MenuItem>
+                  </Menu>
+                </div>
               </div>
 
               <Divider />
@@ -304,6 +333,7 @@ const Card: React.FC<Props> = ({
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          outline: 'none'
         }}
         open={modalOpen}
         onClose={handleModalClose}

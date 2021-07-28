@@ -120,26 +120,29 @@ const Phase: React.FC<Props> = ({ phaseKey, phaseValue }) => {
         },
       })
     );
-    setTitle("")
-    setDesc("")
+    setTitle("");
+    setDesc("");
     handleModalClose();
-    toast.success('Card Added Successfully');
+    toast.success("Card Added Successfully");
   };
-
- 
 
   return (
     <div className="phase">
       <div className="phase_header">
-        <h4>{phaseKey}</h4>
-        <Button
+        <p>{phaseKey}</p>
+        <div
           style={{
-            border: "1px dashed #000",
+            border: "2px dashed #000",
             borderRadius: "50%",
             cursor: "pointer",
-            height: "50px",
-            maxWidth: "40px",
+            height: "40px",
+            width: "40px",
+            // maxWidth: "30px",
             padding: "0px",
+            marginRight: "5px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
             // width: "10px",
           }}
           onClick={handleModalOpen}
@@ -148,10 +151,10 @@ const Phase: React.FC<Props> = ({ phaseKey, phaseValue }) => {
             style={{
               padding: "0px",
               margin: "0px",
+              fontSize: "30px",
             }}
-            fontSize="large"
           />
-        </Button>
+        </div>
       </div>
       <div>
         <Droppable droppableId={phaseValue.id} type="card">
@@ -182,6 +185,7 @@ const Phase: React.FC<Props> = ({ phaseKey, phaseValue }) => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          outline: "none",
         }}
         open={open}
         onClose={handleModalClose}
@@ -207,7 +211,7 @@ const Phase: React.FC<Props> = ({ phaseKey, phaseValue }) => {
               <Divider />
               <div className="addCard_modal_title">
                 <TextField
-                  autoComplete='false'
+                  autoComplete="false"
                   id="card_title"
                   label="Card Title"
                   variant="outlined"
