@@ -1,10 +1,14 @@
 import React from "react";
-import logo from "../assets/trello.png";
+
+//Dependencies Imports
 import FolderTwoToneIcon from "@material-ui/icons/FolderTwoTone";
 import EmailTwoToneIcon from "@material-ui/icons/EmailTwoTone";
 import InsertChartTwoToneIcon from "@material-ui/icons/InsertChartTwoTone";
 import CalendarTodayTwoToneIcon from "@material-ui/icons/CalendarTodayTwoTone";
 import ExitToAppTwoToneIcon from "@material-ui/icons/ExitToAppTwoTone";
+
+//File Imports
+import logo from "../assets/trello.png";
 
 const Sidebar: React.FC = () => {
   return (

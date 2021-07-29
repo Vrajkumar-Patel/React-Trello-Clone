@@ -1,6 +1,8 @@
 // @ts-nocheck
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+
+// Dependencies Import
 import {
   Paper,
   Chip,
@@ -12,56 +14,51 @@ import {
   TextField,
   FormGroup,
   FormControlLabel,
+  IconButton,
+  Menu,
+  MenuItem,
 } from "@material-ui/core";
-import DateFnsUtils from "@date-io/date-fns";
-import { CardType, DragData, ListType } from "../types";
-import AccessAlarmTwoToneIcon from "@material-ui/icons/AccessAlarmTwoTone";
-import CalendarTodayTwoToneIcon from "@material-ui/icons/CalendarTodayTwoTone";
-import { Draggable } from "react-beautiful-dnd";
-import { DroppableStateSnapshot } from "react-beautiful-dnd";
-import { useSelector, useDispatch } from "react-redux";
-import CloseRoundedIcon from "@material-ui/icons/CloseRounded";
-import AddRoundedIcon from "@material-ui/icons/AddRounded";
-
-// for deleteCardButton Icon
-import IconButton from "@material-ui/core/IconButton";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-// import { styled } from "@material-ui/core/styles";
-import { v4 as uuid } from "uuid";
-import { TagsType } from "./Phase";
-// -----------------
-
-// import of progress Images
-import progress1 from "../assets/progress1.png";
-import mainPicImg from "../assets/main.svg";
-
-import { StateType } from "../redux/store";
-import { setDeleteCard, setEditCard } from "../redux/ListsReducer";
-import toast from "react-hot-toast";
 import {
   KeyboardTimePicker,
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
-import styled from "styled-components";
+import DateFnsUtils from "@date-io/date-fns";
+import { Draggable } from "react-beautiful-dnd";
+import { DroppableStateSnapshot } from "react-beautiful-dnd";
+import { useSelector, useDispatch } from "react-redux";
+//  // Material Icons
+import AccessAlarmTwoToneIcon from "@material-ui/icons/AccessAlarmTwoTone";
+import CalendarTodayTwoToneIcon from "@material-ui/icons/CalendarTodayTwoTone";
+import CloseRoundedIcon from "@material-ui/icons/CloseRounded";
+import AddRoundedIcon from "@material-ui/icons/AddRounded";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
 import CreateRoundedIcon from "@material-ui/icons/CreateRounded";
 import DeleteRoundedIcon from "@material-ui/icons/DeleteRounded";
+//  //
 
-// Done
+import { v4 as uuid } from "uuid";
+import toast from "react-hot-toast";
+import styled from "styled-components";
+
+// Types, Components, Redux Actions Imports
+import { CardType, DragData, ListType } from "../types";
+import { TagsType } from "./Phase";
+import { StateType } from "../redux/store";
+import { setDeleteCard, setEditCard } from "../redux/ListsReducer";
+
+// Assets Import
+import mainPicImg from "../assets/main.svg";
 
 type Props = {
   cardIndex: number;
   cardDetails: CardType;
-  droppableSnapshot: DroppableStateSnapshot;
-  phaseDetails: ListType;
   phaseKey: string;
 };
 
-type ChipProps = {
-  label: string;
-  tagIndex: number;
-};
+// type ChipProps = {
+//   label: string;
+//   tagIndex: number;
+// };
 
 const MyPaper = styled.div`
   box-shadow: 0px 3px 5px 1px rgba(0, 0, 0, 0.2);
@@ -69,9 +66,9 @@ const MyPaper = styled.div`
   background-color: ${(props) =>
     props.isDragging ? "rgb(245, 230, 255)" : "white"};
 `;
-const Div = styled("div")({
-  borderRadius: "20px",
-});
+// const Div = styled("div")({
+//   borderRadius: "20px",
+// });
 
 const ModalPaper = styled(Paper)((props) => {
   return {
@@ -92,10 +89,6 @@ const ModalPaper = styled(Paper)((props) => {
 
 const Card: React.FC<Props> = ({ cardIndex, cardDetails, phaseKey }) => {
   const dispatch = useDispatch();
-
-  const dragDestinationData: DragData = useSelector(
-    (state: StateType) => state.lists.dragDestinationData
-  );
 
   const [tagsArray, setTagsArray] = useState<TagsType[] | undefined>(
     cardDetails.tags!
@@ -160,7 +153,7 @@ const Card: React.FC<Props> = ({ cardIndex, cardDetails, phaseKey }) => {
   };
   const handleDeleteChip = (data: TagsType) => {
     const newTagsArray: TagsType[] = tagsArray!.filter(
-      (tagData, index) => tagData.id !== data.id
+      (tagData) => tagData.id !== data.id
     );
     setTagsArray(newTagsArray);
   };
@@ -224,7 +217,12 @@ const Card: React.FC<Props> = ({ cardIndex, cardDetails, phaseKey }) => {
               {/* title section of the Card--------------------------------------------------------------------  */}
               <div className="card_title">
                 <div className="card_titleLeft">
-                  <img src={mainPicImg} height="50px" width="50px" style={{margin: '0px 15px 10px 15px'}} />
+                  <img
+                    src={mainPicImg}
+                    height="50px"
+                    width="50px"
+                    style={{ margin: "0px 15px 10px 15px" }}
+                  />
                   <h3>{cardDetails.title}</h3>
                 </div>
                 <div className="card_titleRight">
@@ -248,8 +246,7 @@ const Card: React.FC<Props> = ({ cardIndex, cardDetails, phaseKey }) => {
                     PaperProps={{
                       style: {
                         maxHeight: "fit-content",
-                        width: "11ch",
-                        //   paddingLeft: "8px",
+                        width: "12ch",
                       },
                     }}
                   >
@@ -333,7 +330,7 @@ const Card: React.FC<Props> = ({ cardIndex, cardDetails, phaseKey }) => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          outline: 'none'
+          outline: "none",
         }}
         open={modalOpen}
         onClose={handleModalClose}
@@ -365,7 +362,6 @@ const Card: React.FC<Props> = ({ cardIndex, cardDetails, phaseKey }) => {
                   variant="outlined"
                   fullWidth
                   required
-                  // defaultValue={cardDetails.title}
                   onChange={(e) => setTitle(e.target.value)}
                   value={title}
                 />
@@ -379,7 +375,6 @@ const Card: React.FC<Props> = ({ cardIndex, cardDetails, phaseKey }) => {
                   variant="outlined"
                   className="addCard_modal_desc"
                   onChange={(e) => setDesc(e.target.value)}
-                  // defaultValue={cardDetails.description}
                   value={desc}
                   rows={5}
                   maxRows={30}
@@ -440,7 +435,7 @@ const Card: React.FC<Props> = ({ cardIndex, cardDetails, phaseKey }) => {
                         hiddenLabel
                         margin="normal"
                         id="time-picker"
-                        ampm={true}
+                        ampm
                         label=""
                         value={startTime}
                         onChange={(date: Date | null) => setStartTime(date)}
@@ -458,7 +453,7 @@ const Card: React.FC<Props> = ({ cardIndex, cardDetails, phaseKey }) => {
                       <KeyboardTimePicker
                         defaultValue={cardDetails.endTime}
                         required
-                        ampm={true}
+                        ampm
                         hiddenLabel
                         margin="normal"
                         id="time-picker"
@@ -475,12 +470,7 @@ const Card: React.FC<Props> = ({ cardIndex, cardDetails, phaseKey }) => {
               </div>
               <Divider style={{ margin: "20px 0px 10px 0px" }} />
               <div className="addCard_modal_submit">
-                <Button
-                  variant="contained"
-                  color="primary"
-                  // onClick={handleSaveChanges}
-                  type="submit"
-                >
+                <Button variant="contained" color="primary" type="submit">
                   Edit Changes
                 </Button>
                 <Button variant="contained" onClick={handleModalClose}>

@@ -1,6 +1,9 @@
+//Dependencies Imports
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ListState, ListType, CardType } from "../types";
-import { stringify, v4 as uuid } from "uuid";
+import { v4 as uuid } from "uuid";
+
+//Files and Types Imports
+import { ListState, CardType } from "../types";
 import cardImage1 from "../assets/abstract1.jpg";
 import cardImage2 from "../assets/abstract2.jpg";
 
@@ -144,10 +147,6 @@ const initialState: ListState = {
     },
   },
 };
-
-// for (const key in initialState) {
-//   let newo = initialState.lists[key];
-// }
 
 export const ListsSlice = createSlice({
   name: "lists",

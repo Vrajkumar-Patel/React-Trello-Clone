@@ -5,9 +5,6 @@ const store = configureStore({
   reducer: {
     lists: ListsReducer,
   },
-  //   middleware: getDefaultMiddleware({
-  //     serializableCheck: false,
-  //   }),
 });
 
 export default store;

@@ -1,20 +1,17 @@
 import "date-fns";
 import React, { useState } from "react";
+
+// Dependencies Imports
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
-import { CardType, ListType } from "../types";
-import Card from "./Card";
-import { Droppable, Draggable } from "react-beautiful-dnd";
-import { v4 as uuid } from "uuid";
+import { Droppable } from "react-beautiful-dnd";
 import {
   Backdrop,
   Button,
-  Checkbox,
   Chip,
   Divider,
   Fade,
   FormControlLabel,
   FormGroup,
-  InputLabel,
   Modal,
   Paper,
   TextField,
@@ -24,13 +21,22 @@ import CloseRoundedIcon from "@material-ui/icons/CloseRounded";
 import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
-  KeyboardDatePicker,
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import { setAddCard } from "../redux/ListsReducer";
-import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { v4 as uuid } from "uuid";
 
+// Types Import
+import { ListType } from "../types";
+
+// Components Import
+import Card from "./Card";
+
+// Redux Action Import
+import { setAddCard } from "../redux/ListsReducer";
+
+// Styled Component
 const MyPaper = styled(Paper)({
   minHeight: "300px",
   maxHeight: "calc(100vh - 100px)",
@@ -46,6 +52,8 @@ const MyPaper = styled(Paper)({
   scrollBehavior: "smooth",
 });
 
+// 
+
 export type TagsType = {
   id: string | number;
   name: string;
@@ -59,20 +67,12 @@ type Props = {
 const Phase: React.FC<Props> = ({ phaseKey, phaseValue }) => {
   const today = new Date();
   const dispatch = useDispatch();
-
   const [open, setOpen] = useState<boolean>(false);
   const [handleTagInput, setHandleTagInput] = useState<boolean>(false);
   const [tagInput, setTagInput] = useState<string>("");
-  // Form States
   const [title, setTitle] = useState<string>("");
   const [desc, setDesc] = useState<string>("");
-  const [tagsArray, setTagsArray] = useState<TagsType[] | undefined>([
-    // { id: 1, name: "Python" },
-    // { id: 2, name: "Important" },
-    // { id: 3, name: "Data" },
-    // { id: 4, name: "JS" },
-    // { id: 5, name: "React" },
-  ]);
+  const [tagsArray, setTagsArray] = useState<TagsType[] | undefined>([]);
   const [startTime, setStartTime] = useState<Date | null>(today);
   const [endTime, setEndTime] = useState<Date | null>(today);
 
@@ -167,8 +167,6 @@ const Phase: React.FC<Props> = ({ phaseKey, phaseValue }) => {
                     cardDetails={card}
                     cardIndex={index}
                     key={card.id}
-                    droppableSnapshot={snapshot}
-                    phaseDetails={phaseValue}
                     phaseKey={phaseKey}
                   />
                 ))}

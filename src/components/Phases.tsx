@@ -1,6 +1,8 @@
 import React from "react";
-import Phase from "./Phase";
 import { useSelector } from "react-redux";
+
+// Components Imports
+import Phase from "./Phase";
 import { StateType } from "../redux/store";
 
 const Phases: React.FC = () => {
